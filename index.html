@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Gerenciador de Tarefas</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Gerenciador de Tarefas</h1>
+
+        <div id="filtros">
+            <input type="text" id="buscar-tarefa" placeholder="Buscar tarefa...">
+
+            <select id="filtro-categoria">
+                <option value="">Todas as Categorias</option>
+                <option value="Trabalho">Trabalho</option>
+                <option value="Estudo">Estudo</option>
+                <option value="Pessoal">Pessoal</option>
+            </select>
+            
+            <select id="filtro-prioridade">
+                <option value="">Todas as Prioridades</option>
+                <option value="Alta">Alta</option>
+                <option value="Média">Média</option>
+                <option value="Baixa">Baixa</option>
+            </select>
+        </div>
+
+        <form id="form-tarefa">
+            <input 
+                type="text" 
+                id="nome-tarefa" 
+                placeholder="Digite o nome da tarefa" 
+                required
+            >
+
+            <select id="categoria">
+                <option value="Estudo">Estudos</option>
+                <option value="Trabalho">Trabalho</option>
+                <option value="Pessoal">Pessoal</option>
+            </select>
+
+
+            <select id="prioridade">
+                <option value="Alta">Alta</option>
+                <option value="Média">Média</option>
+                <option value="Baixa">Baixa</option>
+            </select>
+
+            <button type="submit">Adicionar</button>
+
+            <p id="mensagem"></p>
+        </form>
+
+        <div id="modal-edicao">
+            <div class="modal-content">
+                <h2>Editar Tarefa</h2>
+                <input type="text" id="modal-nome" placeholder="Nome da Tarefa">
+                <select id="modal-categoria">
+                    <option value="">Selecione a categoria</option>
+                    <option value="Trabalho">Trabalho</option>
+                    <option value="Estudo">Estudo</option>
+                    <option value="Pessoal">Pessoal</option>
+                </select>
+                <select id="modal-prioridade">
+                    <option value="">Selecione a prioridade</option>
+                    <option value="Alta">Alta</option>
+                    <option value="Média">Média</option>
+                    <option value="Baixa">Baixa</option>
+                </select>
+                <p id="modal-mensagem"></p>
+                <div class="modal-botoes">
+                    <button class="salvar" onclick="salvarEdicao()">Salvar</button>
+                    <button class="cancelar" onclick="fecharModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>        
+
+        <ul id="lista-tarefas"></ul>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
