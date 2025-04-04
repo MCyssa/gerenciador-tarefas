@@ -19,6 +19,7 @@ form.addEventListener("submit", function (event) {
     let nome = document.getElementById('nome-tarefa').value.trim();
     const categoria = document.getElementById('categoria').value;
     const prioridade = document.getElementById('prioridade').value;
+    const dataConclusao = document.getElementById('data-conclusao').value;
     const criadaEm = new Date().toLocaleString();
 
     nome = nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase();
@@ -27,6 +28,7 @@ form.addEventListener("submit", function (event) {
         tarefaEditar.nome = nome;
         tarefaEditar.categoria = categoria;
         tarefaEditar.prioridade = prioridade;
+        tarefaEditar.dataConclusao = dataConclusao;
         tarefaEditar = null;
         form.reset();
         mensagem.innerHTML = "";
@@ -46,6 +48,7 @@ form.addEventListener("submit", function (event) {
         categoria,
         prioridade,
         criadaEm,
+        dataConclusao,
         concluida: false
     };
 
@@ -80,6 +83,7 @@ function abrirModal(id) {
         document.getElementById('modal-nome').value = tarefa.nome;
         document.getElementById('modal-categoria').value = tarefa.categoria;
         document.getElementById('modal-prioridade').value = tarefa.prioridade;
+        document.getElementById('modal-data-conclusao').value = tarefa.dataConclusao || "";
         tarefaEditar = tarefa;
         modal.style.display = "flex";
     }
@@ -88,21 +92,23 @@ function abrirModal(id) {
 function salvarEdicao() {
     if (tarefaEditar) {
         let novoNome = document.getElementById('modal-nome').value.trim();
-        novoNome = novoNome.charAt(0).toUpperCase() + novoNome.slice(1).toLowerCase(); 
+        novoNome = novoNome.charAt(0).toUpperCase() + novoNome.slice(1).toLowerCase();
         const nomeExistente = tarefas.some(t => t.nome === novoNome && t.id !== tarefaEditar.id);
         if (nomeExistente) {
-            document.getElementById('modal-mensagem').innerText = 'Este nome para a tarefa já existe!'; 
+            document.getElementById('modal-mensagem').innerText = 'Este nome para a tarefa já existe!';
             return;
         }
         tarefaEditar.nome = novoNome;
         tarefaEditar.categoria = document.getElementById('modal-categoria').value;
         tarefaEditar.prioridade = document.getElementById('modal-prioridade').value;
+        tarefaEditar.dataConclusao = document.getElementById('modal-data-conclusao').value;
         tarefaEditar = null;
         document.getElementById('modal-mensagem').innerText = "";
         fecharModal();
         renderizarTarefas();
     }
 }
+
 
 function fecharModal() {
     modal.style.display = "none";
@@ -123,27 +129,52 @@ function toggleConclusao(id) {
 
 function renderizarTarefas(lista = tarefas) {
     listaTarefa.innerHTML = "";
+    const hoje = new Date(); 
+
     lista.forEach((tarefa) => {
         const li = document.createElement("li");
-        li.className = tarefa.concluida ? "concluida" : "";
+
+        let diasRestantes = null;
+        if (tarefa.dataConclusao) {
+            const dataConclusao = new Date(tarefa.dataConclusao);
+            const diff = dataConclusao - hoje;
+            diasRestantes = Math.ceil(diff / (1000 * 60 * 60 * 24)); 
+        }
+
+        let corFundo = "";
+        if (diasRestantes !== null) {
+            if (diasRestantes < 0) {
+                corFundo = "vermelho"; 
+            } else if (diasRestantes === 0) {
+                corFundo = "laranja";
+            } else if (diasRestantes <= 3) {
+                corFundo = "amarelo";
+            } else {
+                corFundo = "verde"; 
+            }
+        }
+
+        li.className = `${tarefa.concluida ? "concluida" : ""} ${corFundo}`;
         li.innerHTML = `
-        <input type="checkbox" onclick="toggleConclusao(${tarefa.id})" ${tarefa.concluida ? "checked" : ""}>
-        <div class="container-tarefa">
-            <div class="tarefas">
-                <strong><i>${tarefa.nome}</i></strong>
-                <div class="classificacao">
-                    <div><strong>Prioridade: </strong> ${tarefa.prioridade} </div>
-                    <div><strong>Categoria: </strong> ${tarefa.categoria} </div>
+            <input type="checkbox" onclick="toggleConclusao(${tarefa.id})" ${tarefa.concluida ? "checked" : ""}>
+            <div class="container-tarefa">
+                <div class="tarefas">
+                    <strong><i>${tarefa.nome}</i></strong>
+                    <div class="classificacao">
+                        <div><strong>Prioridade: </strong> ${tarefa.prioridade} </div>
+                        <div><strong>Categoria: </strong> ${tarefa.categoria} </div>
+                    </div>
+                    <div><strong>Dias restantes:</strong> ${diasRestantes !== null ? diasRestantes : "N/A"}</div>
                 </div>
-            </div>
-            <div class="botoes">
-                Criada em: ${tarefa.criadaEm}
-                <div>
-                    <button onclick="abrirModal(${tarefa.id})">Editar</button>
-                    <button onclick="excluirTarefa(${tarefa.id})">Excluir</button>
+                <div class="botoes">
+                    <div><strong>Criada em:</strong> ${tarefa.criadaEm}</div>
+                    <div><strong>Data de conclusão:</strong> ${tarefa.dataConclusao || "Não definida"}</div>
+                    <div>
+                        <button onclick="abrirModal(${tarefa.id})">Editar</button>
+                        <button onclick="excluirTarefa(${tarefa.id})">Excluir</button>
+                    </div>
                 </div>
-            </div>
-        </div>`;
+            </div>`;
         listaTarefa.appendChild(li);
     });
 }

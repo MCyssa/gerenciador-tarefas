@@ -10,7 +10,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     background: #f4f4f4;
     padding: 20px;
 }
@@ -85,6 +84,16 @@ button:hover {
     background: #0056b3;
 }
 
+.campo {
+    display: flex;
+    flex-direction: column; 
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;  
+}
 
 #filtros {
     display: flex;
@@ -209,4 +218,20 @@ li {
 .concluida {
     background-color: #d4edda;
     color: #155724;
+}
+
+.verde {
+    background-color: #d4edda; /* Verde claro */
+}
+
+.amarelo {
+    background-color: #fff3cd; /* Amarelo */
+}
+
+.laranja {
+    background-color: #f8d7da; /* Laranja */
+}
+
+.vermelho {
+    background-color: #f5c6cb; /* Vermelho */
 }
