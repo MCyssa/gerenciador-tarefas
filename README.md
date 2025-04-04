@@ -11,4 +11,5 @@ Funcionalidades:
 * Editar tarefas existentes;
 * Excluir tarefas;
 * Filtrar por nome, categoria e prioridade;
-* Exibição da data de criação de cada tarefa.
+* Exibição da data de criação de cada tarefa;
+* Data de conclusão e dias restantes para conlcuir a tarefa.
