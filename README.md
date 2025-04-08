@@ -5,6 +5,8 @@ Tecnologias:
 * CSS
 * Javascript
 
+Para visualizar o projeto: https://ceciliahorta.github.io/gerenciador-tarefas/
+
 Funcionalidades:
 * Adicionar novas tarefas com nome, categoria e prioridade;
 * Marcar como concluídas;
